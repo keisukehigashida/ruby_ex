@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+# githubのバージョン管理テスト
+
 require 'date'
 
 
