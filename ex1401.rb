@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# githubのバージョン管理テスト
-
 require 'date'
 
 
@@ -23,8 +21,6 @@ class BookInfo
 		"著書名：#{@title}#{sep} 著者：#{@author}#{sep} ページ数：#{@page}#{sep} 出版日：#{publish_date}#{sep}"
 	end
 end
-
-
 
 
 class BookInfoManager
