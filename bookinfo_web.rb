@@ -26,7 +26,7 @@ WEBrick::HTTPServlet::FileHandler.add_handler("erb",WEBrick::HTTPServlet::ERBHan
 server = WEBrick::HTTPServer.new( config )
 
 
-#/// list
+#/// list　データ表示実行
 
 server.config[:MimeTypes]["erb"] = "text/html"
 
@@ -49,7 +49,7 @@ end
 }
 
 
-#/// touroku
+#/// touroku　データ登録実行
 
 server.mount_proc("/entry"){|req,res|
 p req.query
@@ -68,7 +68,23 @@ end
 }
 
 
+#/// retrieve 検索実行
 
+server.mount_proc("/retrieve"){|req,res|
+p req.query
+
+a = ['id','title','author','page','publish_date']
+a.delete_if{ |name| req.query[name] == "" }
+if a.empty?
+	where_data = ""
+else
+	a.map!{|name| "#{name}='#{req.query[name]}'"}	
+	where_data = "where " + a.join(' or ')
+end
+
+template = ERB.new(File.read('retrieved.erb'))
+res.body << template.result(binding)
+}
 
 
 trap(:INT) do server.shutdown
