@@ -1,0 +1,57 @@
+<%# -*- coding: utf-8 -*- %>
+
+<% require 'rubygems' %>
+<% require 'dbi' %>
+
+<% dbh = DBI.connect('DBI:SQLite3:bookinfo_sqlite.db') %>
+<% rows = dbh.select_all("select * from bookinfos #{where_data};") %>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="default.css">
+	<title>蔵書管理</title>
+</head>
+
+<body>
+<h1>蔵書管理</h1>
+
+<% unless rows.size > 0 then %>
+	<h2>該当データがありません。</h2>
+	<p>検索条件を見直してください。|
+		<a href="list.erb">蔵書データの表示</a>|
+		<a href="index.html"メニュー画面に戻る</a></p>
+	<% else %>
+	<h2>検索結果の表示</h2>
+	<p>検索結果は以下の通りです。|
+		<a href="list.erb">蔵書データの表示</a>|
+		<a href="index.html"メニュー画面に戻る</a></p>
+	<hr>
+
+
+<table>
+	<tr>
+		<% ['id','title','author','page','publish_date'].each do |name| %>
+		<th><%= name %></th>
+		<% end %>
+	</tr>
+
+<% dbh.select_all("select * from bookinfos #{where_data};") do |row| %>
+
+	<tr>
+		<% ['id','title','author','page','publish_date'].each do |name| %>
+		<td><%= row[name].to_s %></td>
+		<% end %>
+	</tr>
+
+<% end %>
+
+</table>
+
+<% end %>
+
+</body>
+</html>
+
+<% dbh.disconnect %>
+
